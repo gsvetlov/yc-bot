@@ -1,0 +1,5 @@
+rootProject.name = 'yc-bot'
+include 'yc-bot-stream-parser'
+include 'yc-queue-reader'
+include 'yc-bot-common'
+

@@ -1,0 +1,46 @@
+plugins {
+    id 'java'
+}
+
+group 'ru.spb.svga.bot'
+version '1.0.12'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation project(':yc-bot-common')
+    implementation 'org.slf4j:slf4j-simple:2.0.6'
+    implementation 'software.amazon.awssdk:sqs:2.20.11'
+    implementation 'software.amazon.awssdk:auth:2.20.11'
+    implementation 'com.yandex.cloud:java-sdk-functions:2.5.3'
+    implementation 'com.jsoniter:jsoniter:0.9.23'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
+}
+
+test {
+    useJUnitPlatform()
+}
+
+jar {
+    manifest {
+        attributes "Main-Class": "ru.spb.svga.bot.yc.handlers.UpdateHandler"
+    }
+
+    from {
+        configurations.runtimeClasspath.collect {it.isDirectory() ? it : zipTree(it)}
+    }
+}
+
+
+task cloudDeployJar(type: Jar) {
+    manifest {
+        attributes 'Main-Class': 'ru.spb.svga.bot.yc.handlers.UpdateHandler'
+    }
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    from { configurations.runtimeClasspath.collect {it.isDirectory() ? it : zipTree(it) }
+    }
+    with jar
+}

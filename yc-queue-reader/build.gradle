@@ -1,0 +1,47 @@
+plugins {
+    id 'java'
+}
+
+group 'ru.spb.svga.bot'
+version '0.0.13'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation project(':yc-bot-common')
+    implementation 'org.slf4j:slf4j-simple:2.0.6'
+    implementation 'com.yandex.cloud:java-sdk-functions:2.5.3'
+    implementation 'com.jsoniter:jsoniter:0.9.23'
+    implementation 'tech.ydb:ydb-sdk-core:2.0.0'
+    implementation 'tech.ydb:ydb-sdk-table:2.0.0'
+    implementation 'tech.ydb.auth:yc-auth-provider:2.0.0'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
+}
+
+test {
+    useJUnitPlatform()
+}
+
+jar {
+    manifest {
+        attributes "Main-Class": "ru.spb.svga.bot.yc.function.handler.MessageQueueReader"
+    }
+
+    from {
+        configurations.runtimeClasspath.collect {it.isDirectory() ? it : zipTree(it)}
+    }
+}
+
+
+task cloudDeployJar(type: Jar) {
+    manifest {
+        attributes 'Main-Class': 'ru.spb.svga.bot.yc.function.handler.MessageQueueReader'
+    }
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    from { configurations.runtimeClasspath.collect {it.isDirectory() ? it : zipTree(it) }
+    }
+    with jar
+}

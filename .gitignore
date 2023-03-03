@@ -1,0 +1,9 @@
+# Project exclude paths
+/.gradle/
+/yc-bot-common/build/
+/yc-bot-common/build/classes/java/main/
+/yc-bot-stream-parser/build/
+/yc-bot-stream-parser/build/classes/java/main/
+/yc-queue-reader/build/
+/yc-queue-reader/build/classes/java/main/
+/yc-queue-reader/build/classes/java/test/
